@@ -1,0 +1,30 @@
+console.log('Client side JavaScript file is loaded!!!')
+
+// fetch('http://localhost:3000/weather?location=boston').then(res=>{
+//     res.json().then(data => {
+//         if(data.error){
+//             console.log(error);
+//         }else{
+//             console.log(data);
+//             console.log(`location: ${data.location} and forecast: ${data.weatherDescription}`);
+//         }
+//     })
+// })
+const search = document.querySelector('input');
+document.querySelector('form').addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const location = search.value;
+    if(!location){
+        console.log("Enter the location");
+    }else{
+        fetch(`http://localhost:3000/weather?location=${location}`).then(res=>{
+            res.json().then(data=>{
+                if(data.error){
+                    console.log(data.error);
+                }else{
+                console.log(`location: ${data.location} and forecast: ${data.weatherDescription}`);
+                }
+            })
+        })
+    }
+})

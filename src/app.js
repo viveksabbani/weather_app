@@ -53,11 +53,11 @@ app.get('/weather',(req,res)=>{
     let data = {}
     geocode(req.query.location,(err,{location, latitude, longitude}={})=>{
         if(err){
-            return res.send({ err })
+            return res.send({ error: err })
         }else{
             forecast({latitude, longitude},(err,{weatherDescription,location,temperature,rainChance}={})=>{
                 if(err){
-                    return res.send({ err })
+                    return res.send({ 'error': err })
                 }else{
                     data['location'] = location;
                     data['weatherDescription'] = weatherDescription;
