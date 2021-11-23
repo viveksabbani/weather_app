@@ -2,6 +2,8 @@ let express = require('express');
 let path = require('path');
 let app = express();
 let hbs = require('hbs');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast'); 
 
 hbs.registerPartials(path.join(__dirname,'../views/partials'));
 app.set('view engine','hbs');
@@ -48,10 +50,30 @@ app.get('/weather',(req,res)=>{
             error: "Location is required!!!"
         })
     }
-    res.send({
-        forcast: 'Today\'s weather is cloudy!!!',
-        location: req.query.location
-    });
+    let data = {}
+    geocode(req.query.location,(err,{location, latitude, longitude}={})=>{
+        if(err){
+            return res.send({ err })
+        }else{
+            forecast({latitude, longitude},(err,{weatherDescription,location,temperature,rainChance}={})=>{
+                if(err){
+                    return res.send({ err })
+                }else{
+                    data['location'] = location;
+                    data['weatherDescription'] = weatherDescription;
+                    data['temperature'] = temperature;
+                    data['rainChance'] = rainChance;
+                    console.log(`${weatherDescription}: Temperature in ${location} is ${temperature} degree Celsius. There is a ${rainChance} chance of rain`)
+                    return res.send(data);
+                }
+            })
+        }
+
+    })
+    // res.send({
+    //     forcast: 'Today\'s weather is cloudy!!!',
+    //     location: req.query.location
+    // });
 })
 
 app.get('/help/*',(req,res)=>{
