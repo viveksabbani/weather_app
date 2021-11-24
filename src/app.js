@@ -5,6 +5,8 @@ let hbs = require('hbs');
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast'); 
 
+const port = process.env.PORT || 3000
+
 hbs.registerPartials(path.join(__dirname,'../views/partials'));
 app.set('view engine','hbs');
 app.set('views',path.join(__dirname,'../views/templates'));
@@ -92,6 +94,6 @@ app.get('*',(req,res)=>{
     })
 })
 
-app.listen(3000,()=>{
+app.listen(port,()=>{
     console.log("Node server is up and running on port 3000");
 })

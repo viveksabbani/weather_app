@@ -18,11 +18,12 @@ document.querySelector('form').addEventListener('submit',(e)=>{
     e.preventDefault();
     const location = search.value;
     if(!location){
-        console.log("Enter the location");
+        // console.log("Enter the location");
+        alert('Enter the locaiton!!!')
     }else{
         place.textContent = 'Loading...';
         info.textContent = '';
-        fetch(`http://localhost:3000/weather?location=${location}`).then(res=>{
+        fetch(`/weather?location=${location}`).then(res=>{
             res.json().then(data=>{
                 if(data.error){
                     place.textContent = data.error;
