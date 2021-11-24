@@ -11,18 +11,26 @@ console.log('Client side JavaScript file is loaded!!!')
 //     })
 // })
 const search = document.querySelector('input');
+const place = document.querySelector('#place');
+place.textContent = '';
+const info = document.querySelector('#info');
 document.querySelector('form').addEventListener('submit',(e)=>{
     e.preventDefault();
     const location = search.value;
     if(!location){
         console.log("Enter the location");
     }else{
+        place.textContent = 'Loading...';
+        info.textContent = '';
         fetch(`http://localhost:3000/weather?location=${location}`).then(res=>{
             res.json().then(data=>{
                 if(data.error){
-                    console.log(data.error);
+                    place.textContent = data.error;
+                    // console.log(data.error);
                 }else{
-                console.log(`location: ${data.location} and forecast: ${data.weatherDescription}`);
+                    // console.log(`location: ${data.location} and forecast: ${data.weatherDescription}`);
+                    place.textContent = data.location;
+                    info.textContent = data.weatherDescription;
                 }
             })
         })
